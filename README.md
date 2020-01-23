@@ -1,0 +1,2 @@
+# Cinike
+Discord Bot
