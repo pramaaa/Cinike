@@ -1,6 +1,0 @@
-cd ..
-cd C:\Users\Asus\Desktop\Cinike a
-
-or
-
-type "CMD" on folder directory
