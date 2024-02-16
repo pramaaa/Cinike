@@ -19,14 +19,18 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 
 # bot = commands.Bot(command_prefix='oy cinike ')
-bot = commands.Bot(command_prefix='/')
-bot.remove_command('help')
-# client = discord.Client()
+# bot = commands.Bot(command_prefix='/')
+# bot.remove_command('help')
+# client = discord.Client() 
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix='/', intents=intents)
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game("PUBG Lite"), afk=False)
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("Bangdream"), afk=False)
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="H"))
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Hyokina noise"))
 
@@ -165,8 +169,6 @@ async def play(ctx, url: str):
     nname = name.rsplit("-", 2)
     await ctx.send(f"Playing: {nname[0]}")
     print("playing\n")
-
-
 
 bot.run(token)
 # client.run(token)
