@@ -25,14 +25,14 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='/', intents=intents)
+bot = commands.Bot(command_prefix=']', intents=intents)
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game("Bangdream"), afk=False)
+    # await bot.change_presence(status=discord.Status.online, activity=discord.Game("ABC"))
     # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="H"))
-    # await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Hyokina noise"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Hyokina noise"))
 
 @bot.event
 async def on_member_join(member):
@@ -45,15 +45,6 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     print(f'{member} telah keluar')
-
-@bot.event
-async def on_message(message):
-    filter = ["ajg", "bgsd"]
-
-    for word in filter:
-        if message.content.count(word) > 0:
-            print('%s berkata kasar' % (message.author.id))   
-    await bot.process_commands(message)
 
 
 @bot.command()
@@ -74,7 +65,7 @@ async def on_command_error(ctx, error):
 
 @bot.command()
 async def bersihkan(ctx, amount: int):
-    await ctx.channel.purge(limit=amount)
+    await ctx.channel.purge(limit=amount+1)
 
 @bersihkan.error
 async def c_error(ctx, error):
@@ -89,15 +80,29 @@ async def doctor(ctx):
 async def s(ctx,*,msg):
     await ctx.message.delete()
     await ctx.send("{}".format(msg))
+    
+@bot.event
+async def on_message(message):
 
-# @bot.event
-# async def on_message(Message):
-#     if Message.author.bot:
-#         return
+    filter = ["ajg", "bgsd"]
 
-#     if "hina adji" in Message.content.lower():
-#         await Message.channel.send("adji gblg")
-#     return
+    dictonari = {
+        "hina adji" : 'adji gblg <@313318171215921154>',
+        "hina pajrun" : "pajrun gblg <@256780323533094919>"
+    }
+
+    if message.author == bot.user:
+        return
+
+    if message.content in dictonari:
+        await message.channel.send(dictonari[message.content])
+
+    for word in filter:
+        if message.content.count(word) > 0:
+            print('%s berkata kasar' % (message.author.id))
+            await message.channel.send('<@%s> berkata kasar' % (message.author.id))
+    
+    await bot.process_commands(message)
 
 @bot.command(pass_context=True)
 async def join(ctx):
@@ -112,7 +117,6 @@ async def join(ctx):
         voice = await channel.connect()
         print(f"Cinike telah join ke {channel}\n")
     await ctx.send(f"Cinike join ke {channel}")
-
 
 @bot.command(pass_context=True)
 async def leave(ctx):
